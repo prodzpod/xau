@@ -14,6 +14,8 @@ Math.prec = function(n, a=6) { return Math.round(n * Math.pow(10, a)) / Math.pow
 Math.approxeq = function(a, b, t=10) { return this.prec(a, t) === this.prec(b, t); }
 Math.dot = function(p1, p2) { return (p1.x * p2.x) + (p1.y * p2.y); }
 function pointInLine(p, a, b) {
+    if (a.x === b.x) return p.x === a.x;
+    if (a.y === b.y) return p.y === a.y;
     return ((p.x - a.x) / (b.x - a.x)) === ((p.y - a.y) / (b.y - a.y));
 }
 function pointInSegment(p, a, b) {
