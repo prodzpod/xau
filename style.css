@@ -1,0 +1,133 @@
+:root {
+    --right: #DDAADDFF;
+    --rightStroke: #FFFFFFFF;
+}
+
+body {
+    background-color: black;
+}
+
+.panel-wrapper {
+    display: flex;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+#panel {
+    border: 1px solid gray;
+    max-width: calc(100vmin - 256px);
+    max-height: calc(100vmin - 256px);
+    margin: 128px;
+}
+
+.panel {
+    width: 100%;
+}
+
+.solve {
+    width: 100%;
+    height: 64px;
+    background-color: gray;
+    margin: 16px 0;
+}
+
+.undo {
+    width: 64px;
+    height: 64px;
+    background-color: gray;
+    margin-top: -80px;
+    margin-bottom: 16px;
+}
+
+.restart {
+    width: 64px;
+    height: 64px;
+    background-color: gray;
+    margin-top: -80px;
+    margin-bottom: 16px;
+    float: right;
+}
+
+.wrong {
+    animation: 0.4s 20 alternate-reverse error;
+}
+
+.right {
+    animation: 0.4s forwards correct;
+}
+
+.rightStroke {
+    animation: 0.4s forwards correctStroke;
+}
+
+@keyframes error {
+    to { fill: red; }
+}
+
+@keyframes correct {
+    to { fill: var(--right); }
+}
+
+@keyframes correctStroke {
+    to { fill: var(--rightStroke); }
+}
+
+#left {
+    width: 64px;
+    padding-left: 192px;
+    margin: -112px;
+}
+
+#right {
+    width: 256px;
+    margin: -112px;
+    background-color: gray;
+}
+
+.tools {
+    width: 64px;
+    height: 64px;
+    background-color: gray;
+}
+
+.tools-right {
+    width: 60px;
+    height: 60px;
+    background-color: gray;
+    border: none;
+}
+
+.tools.active, .tools-right.active {
+    background-color: rgb(64, 64, 64);
+}
+
+.entry {
+    display: block;
+    margin: 4px;
+}
+
+.entry * {
+    display: inline-block;
+}
+
+.entry p, .entry input, .right-save {
+    margin: 4px;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    color: white;
+}
+
+.entry input {
+    width: 48px;
+    height: 24px;
+    float: right;
+    background-color: #444444;
+    border: 0px;
+}
+
+.right-save {
+    width: 112px;
+    height: 24px;
+    background-color: #444444;
+    border: none;
+}
