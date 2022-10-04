@@ -21,6 +21,7 @@ function selectTool(tool) {
             let sizeControl = insertEntry('Size', 'number', 'number');
             sizeControl[1].with('min', 1).with('max', 256).with('step', 0.25).with('value', panel.size.x).with('id', 'right-size-x').with('onchange', `render(e('panel').panel)`);
             sizeControl[0].with('min', 1).with('max', 256).with('step', 0.25).with('value', panel.size.y).with('id', 'right-size-y').with('onchange', `render(e('panel').panel)`);
+            insertEntry('Regions', 'number')[0].with('min', 0).with('step', 1).with('value', panel.regions).with('id', 'right-regions').with('onchange', `render(e('panel').panel)`)
             insertColorEntry('Background', 'background', panel.style.background)
             insertColorEntry('Dot Color', 'dots', panel.style.dots)
             insertColorEntry('Dot Correct', 'rightDots', panel.style.rightDots)
@@ -130,7 +131,7 @@ function placeSymbolAt(pos) {
 }
 
 function simpleGrid(x, y) {
-    let panel = new Panel(x, y);
+    let panel = new Panel(x, y, e('right-regions').value);
     for (let i = 0.5; i < x; i++) for (let j = 0.5; j < y; j++) panel.dots.push(new Dot(i, j));
     return panel;
 }

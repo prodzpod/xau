@@ -2,6 +2,7 @@ function render(panel) {
     cleanElement('panel');
     e('panel').panel = panel;
     if (e('right-size-x')) panel.size = new Pair(e('right-size-x').value, e('right-size-y').value)
+    if (e('right-regions')) panel.regions = Number(e('right-regions').value)
     e('panel').style.width = 128 * panel.size.x;
     e('panel').style.height = 128 * panel.size.y;
     e('left').style.height = 128 * panel.size.y;
@@ -17,11 +18,7 @@ function render(panel) {
     insertElement('svg', 'panel', 'panel').with('id', 'panel-svg').with('viewBox', `0 0 ${panel.size.x} ${panel.size.y}`)
     initUI();
     insertElement('rect', 'panel-svg').with('id', 'bg').with('width', panel.size.x).with('height', panel.size.y).with('fill', intToHex(panel.style.background))
-    insertElement('g', 'panel-svg').with('id', 'sprite-back')
-    drawSprites('sprite-back', panel.sprites.filter(x => x.z < 0));
     insertElement('g', 'panel-svg').with('id', 'line')
-    insertElement('g', 'panel-svg').with('id', 'sprite')
-    drawSprites('sprite', panel.sprites.filter(x => x.z === 0));
     insertElement('g', 'panel-svg').with('id', 'symbol');
     const dotColor = intToHex(panel.style.dots);
     // break
@@ -34,8 +31,6 @@ function render(panel) {
         insertElement('path', el, 'dot-circle').with('id', `dot-${i}`).with('d', svg('dot')).with('fill', dot.color === -1 ? dotColor : intToHex(dot.color))
         if (dot.square !== -1) insertElement('path', el).with('d', svg('square')).with('fill', intToHex(dot.square))
     }
-    insertElement('g', 'panel-svg').with('id', 'sprite-front')
-    drawSprites('sprite-front', panel.sprites.filter(x => x.z > 0));
     insertElement('g', 'panel-svg').with('id', 'editor-ghost').with('style', 'opacity: 0.5;')
     refresh('panel-svg')
     e('panel').pointer = e('panel-svg').createSVGPoint();
@@ -44,6 +39,10 @@ function render(panel) {
     e('panel').onmouseenter = drawEditorGhost;
     e('panel').onmouseleave = destroyEditorGhost;
     e('panel').onmousedown = placeEditorSymbols;
+    insertElement('div', 'panel', 'regions').with('id', 'regions')
+    tsvg = insertElement('svg', 'regions').with('viewBox', `-0.15 -0.3 ${panel.size.x} 0.6`)
+    for (let i = 0; i < panel.regions; i++) insertElement('path', tsvg).with('d', svg('square')).with('fill', 'white').with('transform', `scale(0.5, 0.5) translate(${i * 0.35}, -0.3)`);
+    refresh(tsvg);
     insertElement('div', 'panel', 'solve').with('id', 'solve').with('onmousedown', `solve('panel')`)
     tsvg = insertElement('svg', 'solve').with('viewBox', '-0.5 -0.5 1 1').with('style', 'height: 100%; margin: 0 auto; display: block;')
     insertElement('path', tsvg).with('d', svg('solve')).with('fill', 'white');
@@ -63,7 +62,8 @@ const SVG_LIST = {
     break: "M-.15-.15.15-.15.15.15-.15.15",
     undo: "M.3-.1 0-.1 0-.3-.3 0 0 .3 0 .1.3.1",
     restart: "M-.2-.1.2-.1.1.3-.1.3M-.2-.2.2-.2.1-.3-.1-.3",
-    solve: "M-.1-.1-.2 0 0 .2.3-.1.2-.2 0 0"
+    solve: "M-.1-.1-.2 0 0 .2.3-.1.2-.2 0 0",
+    image: "M -0.3 -0.2 L 0.3 -0.2 L 0.3 0.2 L -0.3 0.2 M 0.2 0.1 L 0.05 -0.1 L -0.1 0.1 M -0.05 -0.1 A 0.1 0.1 0 1 0 -0.05 0 A 0.1 0.1 0 0 0 -0.05 -0.1",
 };
 function svg(d) {
     return SVG_LIST[d] ?? d;

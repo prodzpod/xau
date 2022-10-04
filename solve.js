@@ -12,12 +12,17 @@ function solve(id) {
         if (dirty) makePairs(panel);
         let regions = [];
         for (let i = 0; i < panel.dots.length; i++) {
-            if (panel.dots[i].square === -1) continue;
             if (regions.flat().includes(i)) continue;
-            // for all square not in regions yet
+            // for all not in regions yet
             regions.push(getRegion(i));
         }
-        for (let region of regions) invalid.push(...dotCheck(panel, region));
+        if (panel.regions !== 0 && regions.length !== panel.regions) { 
+            for (let i = 0; i < panel.dots.length; i++) invalid.push(i);
+        }
+        else {
+            for (let region of regions) invalid.push(...dotCheck(panel, region));
+            invalid = unique(invalid);
+        }
     }
     if (invalid.length) {
         for (let i of invalid) e(`dot-${i}`).classList.add('wrong');
@@ -47,6 +52,7 @@ function dotCheck(panel, region) {
     let color = null;
     let invalid = [];
     const squares = region.filter(x => panel.dots[x].square !== -1);
+    if (squares.length === 0) return [];
     if (squares.length === 1) return squares;
     for (let i of squares) { // handle color
         if (panel.dots[i].square === 0x000000FF) continue;
@@ -58,7 +64,7 @@ function dotCheck(panel, region) {
     }
     if (color === -1) invalid.push(...squares.filter(x => panel.dots[x].square !== 0x000000FF))
     invalid.push(...squares.filter(x => getConnected(x).length !== 1));
-    return unique(invalid);
+    return invalid;
 }
 
 function getConnected(i) {

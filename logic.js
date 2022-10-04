@@ -28,7 +28,8 @@ class Panel {
     size; // Pair
     dots = []; // Dot[]
     breaks = []; // Pair[]
-    sprites = []; // Sprite[]
+    bg = []; // Sprite[]
+    fg = []; // Sprite[]
     rules; // Rule[]
     style = {
         background: 0x000000FF, // color
@@ -38,9 +39,11 @@ class Panel {
         rightStroke: 0xFFFFFFFF, // lines upon winning
     }
     path = null;
+    regions = 0;
 
-    constructor(width, height, background=0x000000FF, dots=0xFFFFFFFF, rightDots=0xDDAADDFF, stroke=0xFFFFFFFF, rightStroke=0xFFFFFFFF, rules=[]) {
+    constructor(width, height, regions=0, background=0x000000FF, dots=0xFFFFFFFF, rightDots=0xDDAADDFF, stroke=0xFFFFFFFF, rightStroke=0xFFFFFFFF, rules=[]) {
         this.size = new Pair(width, height);
+        this.regions = regions;
         this.style.background = background;
         this.style.dots = dots;
         this.style.stroke = stroke;
@@ -66,20 +69,14 @@ class Panel {
 }
 
 class Sprite {
-    d; // SVG path string
-    fill; // color
+    url; // Duh
     pos; // Pair
-    z;
     size; // Pair
-    rot; // radian
-
-    constructor(d, x, y, z=-1, fill=0xFFFFFFFF, xscale=1, yscale=xscale, rot=0) {
-        this.d = d;
+    
+    constructor(url, x, y, xscale=1, yscale=xscale) {
+        this.url = url;
         this.pos = new Pair(x, y);
-        this.z = z;
-        this.fill = fill;
         this.size = new Pair(xscale, yscale);
-        this.rot = rot;
     }
 }
 

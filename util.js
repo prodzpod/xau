@@ -19,7 +19,7 @@ function pointInLine(p, a, b) {
     return ((p.x - a.x) / (b.x - a.x)) === ((p.y - a.y) / (b.y - a.y));
 }
 function pointInSegment(p, a, b) {
-    return pointInLine(p, a, b) && ((a.x <= p.x && p.x <= b.x) || (a.x >= p.x && p.x >= b.x));
+    return pointInLine(p, a, b) && ((a.x <= p.x && p.x <= b.x) || (a.x >= p.x && p.x >= b.x)) && ((a.y <= p.y && p.y <= b.y) || (a.y >= p.y && p.y >= b.y));
 }
 function pointToLine(p0, p1, p2) { // three Pair
     return Math.abs(((p2.x - p1.x) * (p1.y - p0.y)) - ((p1.x - p0.x) * (p2.y - p1.y))) / Math.sqrt(((p2.x - p1.x) * (p2.x - p1.x)) + ((p2.y - p1.y) * (p2.y - p1.y)));

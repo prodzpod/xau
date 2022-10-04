@@ -5,7 +5,7 @@ function saveButton() {
 
 function save() {
     const panel = e('panel').panel;
-    let bytes = savePair(panel.size);
+    let bytes = savePair(panel.size) + String.fromCharCode(panel.regions);
     bytes += ['background', 'dots', 'stroke', 'rightDots', 'rightStroke'].map(x => intToByte(panel.style[x])).join('');
     bytes += String.fromCharCode(panel.dots.length);
     for (let dot of panel.dots) bytes += saveDot(dot);
@@ -16,7 +16,7 @@ function save() {
         bytes += intToShort(panel.path.length);
         for (let inst of panel.path) bytes += intToShort(inst);
     }
-    return savePost(bytes, 'v1');
+    return savePost(bytes, 'v2');
 }
 
 function saveDot(dot) {
@@ -75,6 +75,8 @@ function load(raw) {
     switch (version) {
         case 'v1':
             return loadV1(string);
+        case 'v2':
+            return loadV1(string, 2);
         default:
             return null;
     }
@@ -84,11 +86,15 @@ function loadPre(string) {
     return atob(derunLength(string).replace(/\./g, '+').replace(/\-/g, '/').replace(/\_/g, '='));
 }
 
-function loadV1(string) {
+function loadV1(string, version=1) {
     let ptr = 0;
     let panel = new Panel(1, 1);
     panel.size = loadPair(string.slice(ptr, ptr + 8));
     ptr += 8;
+    if (version > 1) {
+        panel.regions = string.charCodeAt(ptr);
+        ptr++;
+    }
     for (let style of ['background', 'dots', 'stroke', 'rightDots', 'rightStroke']) {
         panel.style[style] = byteToInt(string.slice(ptr, ptr + 4), false);
         ptr += 4;

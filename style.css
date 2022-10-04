@@ -49,6 +49,12 @@ body {
     float: right;
 }
 
+.regions {
+    height: 32px;
+    margin-top: -24px;
+    margin-bottom: -8px;
+}
+
 .wrong {
     animation: 0.4s 20 alternate-reverse error;
 }
@@ -105,6 +111,7 @@ body {
 .entry {
     display: block;
     margin: 4px;
+    min-height: 32px;
 }
 
 .entry * {
